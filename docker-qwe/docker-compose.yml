@@ -1,4 +1,4 @@
-version: '3'
+version: '3.8'
 services:
   
   #PHP Service
@@ -6,17 +6,16 @@ services:
     build:
       context: ./docker/php_8.1
       dockerfile: Dockerfile
-    image: digitalocean.com/php
-    container_name: app
-    restart: unless-stopped
+    container_name: ${COMPOSE_APP_NAME}-app
+    restart: always
     tty: true
     environment:
       SERVICE_NAME: app
       SERVICE_TAGS: dev
-    working_dir: /var/www
+    working_dir: /var/www/lara-docker
     volumes:
-       - ./:/var/www
-       - .docker/php_8.1/config/php.ini:/usr/local/etc/php/conf.d/php.ini
+       - ${MARKETING_API_PATH}/:/var/www/lara-docker
+       - ./docker/php_8.1/config/php.ini:/usr/local/etc/php/conf.d/php.ini
     networks:
       - app-network
 
@@ -26,13 +25,14 @@ services:
       context: ./docker/nginx
       dockerfile: Dockerfile
     container_name: nginx-webserver
-    restart: unless-stopped
+    restart: always
     tty: true
     ports:
       - "80:80"
       - "443:443"
+    working_dir: /var/www
     volumes:
-      - ./docker/nginx/conf.d/:/etc/nginx/conf.d/
+      - ${MARKETING_API_PATH}/:/var/www/lara-docker
     networks:
       - app-network
 

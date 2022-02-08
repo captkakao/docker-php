@@ -1,5 +1,5 @@
-FROM nginx:alpine
+FROM nginx:1.17.8
 
-ADD ./docker/nginx/conf.d/app.conf /etc/nginx/conf.d/app.conf
+ADD ./conf.d/app.conf /etc/nginx/conf.d/app.conf
 
 WORKDIR /var/www
