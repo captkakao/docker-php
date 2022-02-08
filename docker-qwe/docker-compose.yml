@@ -2,11 +2,11 @@ version: '3.8'
 services:
   
   #PHP Service
-  app:
+  marketing-api-php-fpm:
     build:
       context: ./docker/php_8.1
       dockerfile: Dockerfile
-    container_name: ${COMPOSE_APP_NAME}-app
+    container_name: ${COMPOSE_APP_NAME}-php-fpm-${COMPOSE_APP_VERSION}
     restart: always
     tty: true
     environment:
@@ -20,15 +20,15 @@ services:
       - app-network
 
   #Nginx Service
-  webserver:
+  nginx:
     build:
       context: ./docker/nginx
       dockerfile: Dockerfile
-    container_name: nginx-webserver
+    container_name: ${COMPOSE_APP_NAME}-nginx-${COMPOSE_APP_VERSION}
     restart: always
     tty: true
     ports:
-      - "80:80"
+      - "8080:82"
       - "443:443"
     working_dir: /var/www
     volumes:
